@@ -1,4 +1,4 @@
-# Simulator of pre fixed loans offered by the Brazilian banks
+# Simulator of Brazilian pre fixed loans in Angular 2
 
 This application simulates pre fixed multi repayments loans contracts, including:
 * Contracts (the input forms)
