@@ -21,6 +21,6 @@ Frontend:
 
 # Tests
 
-Can be run at www.immaginareservice.com.br/app/twsfin1
+Can be run at www.immaginareservice.com.br/app/twsfin1 (alpha not optimized to speed)
 
 
