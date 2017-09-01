@@ -1,0 +1,27 @@
+<h2>Financiamentos</h2>
+
+<div class="pull-right">
+    <button type="button" class="btn btn-default" (click)="detail(0)">Incluir</button>    
+</div>
+<table class="table">
+    <thead>
+        <tr>
+             <th>Id</th>
+             <th>Tipo</th>
+             <th>Data</th>
+             <th>Fim</th>
+             <th>Valor</th>
+             <th>Taxa</th>
+         </tr> 
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of list">
+            <td><a href="" (click)="detail(item.id)">{{item.id}}</a></td>
+            <td nowrap>{{item.std}}</td>
+            <td>{{item.dt | date:"dd/MM/yyyy" }}</td>
+            <td>{{item.dtf | date:"dd/MM/yyyy"}}</td>
+            <td class="val">{{item.val | numberFormat}}</td>
+            <td class="val">{{item.irr*100 | numberFormat}}%a.a.</td>
+        </tr>
+    </tbody>
+</table>

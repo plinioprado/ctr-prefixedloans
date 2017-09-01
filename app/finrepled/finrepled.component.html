@@ -1,0 +1,34 @@
+<h2>Financiamentos - movimento na controladoria</h2>
+
+<table class="table" id="rep">
+  <thead>
+      <tr>
+          <th>Data</th>
+          <th>Histórico</th>
+          <th>Contrato</th>
+          <th>Conta</th>
+          <th>Nome</th>
+          <th>Débito</th>
+          <th>Crédito</th>
+      </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of list">
+      <td>{{item.dt | date:"dd/MM/yy"}}</td>
+      <td>{{item.hist}}</td>
+      <td>{{item.docto}}</td>
+      <td>{{item.acc}}</td>
+      <td>{{item.accName}}</td>
+      <td>{{item.valDb | numberFormat}}</td>
+      <td>{{item.valCr | numberFormat}}</td>       
+    </tr>
+  </tbody>
+</table>
+<style>
+    #rep tbody tr td:nth-child(6) {
+        text-align: right;
+    }
+    #rep tbody tr td:nth-child(7) {
+        text-align: right;
+    }
+</style>

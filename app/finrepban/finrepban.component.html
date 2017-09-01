@@ -1,0 +1,36 @@
+<h2>Financiamentos - Movimento bancário</h2>
+
+<table class="table rep">
+    <thead>
+        <tr>
+            <th width="100" nowrap>Data</th>
+            <th>Histórico</th>
+            <th width="50">Docto</th>
+            <th>Crédito</th>
+            <th>Débito</th>
+            <th>Saldo</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of list">
+      <td>{{item.dt | date:"dd/MM/yy"}}</td>
+      <td>{{item.hist}}</td>
+      <td>999999</td>
+      <td>{{ ( item.val > 0 ? item.val : null ) | numberFormat}}</td>
+      <td>{{ ( item.val < 0 ? item.val : null ) | numberFormat}}</td>
+      <td>{{item.bal | numberFormat}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<style>
+    .rep tbody tr td:nth-child(4) {
+        text-align: right;
+    }
+    .rep tbody tr td:nth-child(5) {
+        text-align: right;
+    }
+    .rep tbody tr td:nth-child(6) {
+        text-align: right;
+    }
+</style>

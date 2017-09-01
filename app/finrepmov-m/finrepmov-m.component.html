@@ -1,0 +1,44 @@
+<h2>Financiamentos - Movimento da carteira por mês</h2>
+
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table" id="rep">
+            <thead>
+                <tr>
+                  <th>Mês</th>
+                  <th>S.inicial</th>
+                  <th>Captação</th>
+                  <th>Repagamento</th>
+                  <th>Juros</th>
+                  <th>S.final</th>
+                </tr>
+            </thead>
+            <tbody>
+             <tr *ngFor="let item of list">
+              <td>{{item.dt | date:"MM/yy"}}</td>
+              <td>{{item.valPrev | numberFormat}}</td>
+              <td>{{item.valBan | numberFormat}}</td>
+              <td>{{item.valRep | numberFormat}}</td>
+              <td>{{item.valPal | numberFormat}}</td>
+              <td>{{item.val | numberFormat}}</td>
+             </tr>
+             </tbody>
+        </table>
+    </div>
+</div>
+<style>
+    #rep tbody tr td:nth-child(2) {
+        text-align: right;
+    }
+    #rep tbody tr td:nth-child(3) {
+        text-align: right;
+    }    #rep tbody tr td:nth-child(4) {
+        text-align: right;
+    }
+    #rep tbody tr td:nth-child(5) {
+        text-align: right;
+    }
+    #rep tbody tr td:nth-child(6) {
+        text-align: right;
+    }
+</style>

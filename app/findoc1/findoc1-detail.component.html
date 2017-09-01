@@ -1,0 +1,152 @@
+<form (ngSubmit)="onSubmit()" #myForm="ngForm">
+<h2>Financiamento (Validações em obras)</h2>
+
+    <div class="row">
+        <div class="col-xs-12 col-md-8 doc-left">
+
+            <div class="pull-right">
+                <button type="button" class="btn btn-default" (click)="edit()" *ngIf="(ro && data.id != 0)">Editar</button>
+                <button type="button" class="btn btn-default" (click)="back()">Voltar</button>
+            </div>
+
+            <h3>Contrato</h3>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-3">
+                    <label for="Id">Id:</label>
+                    <input type="text" class="form-control" disabled [(ngModel)]="data.id" name="id" >
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <label for="Dt">Data*:</label>
+                    <input type="string" class="form-control" maxlength="10" required name="dt" [disabled]="ro" [(ngModel)]="data.dt" (keypress)="onKeyPressDt($event, data.dt)" (change)="calc()">
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <label for="Cod">Contrato:</label>
+                    <input type="text" class="form-control" maxlength="15" [(ngModel)]="data.cod" name="cod" [disabled]="ro">
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <label for="Std">Tipo*:</label>
+                    <select class="form-control" [(ngModel)]="data.std" name="std" [disabled]="ro">
+                        <option *ngFor="let s of data.stdList" [value]="s">{{s}}</option>
+                    </select>
+
+                </div>
+            </div>
+
+            <h3>Captação</h3>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-3">
+                    <label for="dt">Data*:</label>
+                    <input type="text" class="form-control" maxlength="10" required name="dt"[(ngModel)]="data.dt" (keypress)="onKeyPressDt($event)" [disabled]="ro" (change)="calc()">
+                </div>
+
+                <div class="col-xs-12 col-sm-3">
+                    <label for="val">Valor*:</label>
+                    <input type="text" class="form-control val" maxlength="15" required name="val" [disabled]="ro" [(ngModel)]="data.val" (focus)="data.val=valUnformat(data.val)" (keypress)="onKeyPressVal($event, data.val)" (keyup.enter)="data.val=valFormat(data.val);calc()" (blur)="data.val=valFormat(data.val);calc()">
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <label for="valiof">Val.IOF:</label>
+                    <input type="text" class="form-control val" maxlength="15" name="valiof" [disabled]="ro" [(ngModel)]="data.valiof" (focus)="data.valiof=valUnformat(data.valiof)" (keypress)="onKeyPressVal($event, data.valiof)" (keyup.enter)="data.valiof=valFormat(data.valiof);calc()" (blur)="data.valiof=valFormat(data.valiof);calc()">
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <label for="std">Val.Seguro:</label>
+                    <input type="text" class="form-control val" maxlength="15" name="valseg" [disabled]="ro" [(ngModel)]="data.valseg" (focus)="data.valseg=valUnformat(data.valseg)" (keypress)="onKeyPressVal($event, data.valseg)" (keyup.enter)="data.valseg=valFormat(data.valseg);calc()" (blur)="data.valseg=valFormat(data.valseg);calc()">
+                </div>
+            </div>
+
+            <h3>Repagamentos</h3>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-3">
+                    <label for="id">Parcelas*:</label>
+                    <input type="text" maxlength="2" class="form-control" required name="n" [(value)]="data.n" [disabled]="ro" (change)="calc()">
+                </div>
+                 <div class="col-xs-12 col-sm-3">
+                    <label for="pmt">Valor*:</label>
+                    <input type="text" maxlength="15" class="form-control val" name="pmt" [disabled]="ro" [(ngModel)]="data.pmt" (keypress)="onKeyPressVal($event)" (keyup.enter)="data.pmt=valFormat(data.pmt, data.pmt);calc()" (blur)="data.pmt=valFormat(data.pmt);calc()">
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <label for="dt1">Vencimento 1*:</label>
+                    <input type="text" class="form-control val" maxlength="10" [(ngModel)]="data.dt1" (keypress)="onKeyPressDt($event)" name="dt1" [disabled]="ro" required (change)="calc()">
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    &nbsp;{{data.Val}}
+                </div>
+            </div>
+
+            <div class="pull-right">
+                <button type="submit" class="btn btn-default" *ngIf="!ro" [disabled]="!myForm.form.valid">Ok</button>
+            </div>
+
+            <h3>Sumário</h3>
+
+            <div class="panel panel-default">
+                 <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-3">Valor captado:</div>
+                        <div class="col-xs-6 col-sm-3 val">{{data.val}}</div>
+                        <div class="col-xs-6 col-sm-3">Taxa efetiva:</div>
+                        <div class="col-xs-6 col-sm-3 val">{{irr * 100 | numberFormat}} %a.a.</div>
+                        <div class="col-xs-6 col-sm-3">Prazo médio:</div>
+                        <div class="col-xs-6 col-sm-3 val">{{nAvg | numberFormat}} dias</div>
+                        <div class="col-xs-6 col-sm-3">Tipo:</div>
+                        <div class="col-xs-6 col-sm-3 val">{{data.std}}</div>
+                        <div class="col-xs-6 col-sm-3">Valor repago:</div>
+                        <div class="col-xs-6 col-sm-3 val">{{pmtTot | numberFormat}}</div>
+                        <div class="col-xs-6 col-sm-3">Vencimentos:</div>
+                        <div class="col-xs-6 col-sm-3 val">{{data.dt1}} a {{dtLast | date:"dd/MM/yyyy"}}</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-xs-12 col-md-4">
+
+            <div class="row">
+                <div class="col-xs-12">
+
+                    <h3>Movimentos</h3>
+                    
+                    <table class="table table-mov">
+                        <thead>
+                            <tr>
+                                <th width="100">Data</th>
+                                <th>Histórico</th>
+                                <th width="40%">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="3"><strong>Captação e encargos</strong></td>
+                            </tr>
+                            <tr *ngFor="let item0 of mov0">
+                                <td>{{item0.dt | date:"dd/MM/yyyy" }}</td>
+                                <td>{{item0.hist}}</td>
+                                <td>{{item0.val | numberFormat}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"><strong>Repagamentos</strong></td>
+                            </tr>
+                             <tr *ngFor="let item of mov">
+                                <td>{{item.dt | date:"dd/MM/yyyy"}}</td>
+                                <td>{{item.hist}}</td>
+                                <td>{{item.val | numberFormat}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<style>
+    .doc-left {
+        padding-right: 40px;
+    }
+
+    .table-mov tbody tr td:nth-child(3) {
+        text-align: right;
+    }
+</style>
